@@ -10,6 +10,7 @@
     "Lucas M. Malfertheiner"
   ],
   "scripts": {
+    "postinstall": "node -e \"require('fs').existsSync('.env') || require('fs').copyFileSync('.env.example', '.env')\"",
     "dev": "nodemon src/index.js",
     "start": "node src/index.js",
     "lint": "eslint src/ --fix"
