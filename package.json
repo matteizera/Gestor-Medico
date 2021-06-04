@@ -13,7 +13,12 @@
     "postinstall": "node -e \"require('fs').existsSync('.env') || require('fs').copyFileSync('.env.example', '.env')\"",
     "dev": "nodemon src/index.js",
     "start": "node src/index.js",
-    "lint": "eslint src/ --fix"
+    "lint": "eslint src/ --fix",
+    "seed": "sequelize db:seed:all",
+    "migrate": "sequelize db:migrate",
+    "migrate:seed": "npm run migrate && npm run seed",
+    "migrate:reset": "sequelize db:migrate:undo:all && npm run migrate",
+    "migrate:reset:seed": "npm run migrate:reset && npm run seed"
   },
   "dependencies": {
     "dotenv": "^10.0.0",
