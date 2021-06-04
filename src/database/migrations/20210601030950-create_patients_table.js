@@ -1,6 +1,6 @@
 
 module.exports = {
-  up: async (queryInterface, { DataTypes }) => {
+  up: async (queryInterface, { DataTypes, fn }) => {
     await queryInterface.createTable('patients', {
       id: {
         type: DataTypes.INTEGER,
@@ -19,8 +19,18 @@ module.exports = {
         type: DataTypes.STRING,
         allowNull: false,
       },
-      createdAt: DataTypes.DATE,
-      updatedAt: DataTypes.DATE,
+      createdAt: {
+        type: DataTypes.DATE,
+        defaultValue: fn('NOW'),
+      },
+      updatedAt: {
+        type: DataTypes.DATE,
+        defaultValue: fn('NOW'),
+      },
+      deletedAt: {
+        type: DataTypes.DATE,
+        allowNull: true,
+      },
     })
   },
 
