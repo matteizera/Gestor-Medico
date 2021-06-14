@@ -59,9 +59,15 @@ module.exports = {
   },
   newPatient(req,res){
     const { name, email, phone, } = req.body
-    Patients.create({ name, email, phone })
+    console.log(!!name, !!email, !!phone,)
+    if (!!name && !!email && !!phone) {
+       Patients.create({ name, email, phone })
       .then(patient => res.json(patient).status(202))
       .catch(err=>res.json(err).status(404))
+    } else {
+      res.json({msg:"Faltam dados"}).status(404)
+    }
+
   },
   searchPatientByName(req,res){
     const { name } = req.params
