@@ -8,4 +8,8 @@ PatientRouter.put('/updatePatient/:id', PatientController.updatePatient)
 
 PatientRouter.get('/searchPatientByPhysicianId/:id', PatientController.searchPatientByPhysicianId)
 
+PatientRouter.post('/newPatient', PatientController.newPatient)
+PatientRouter.get('/searchPatientByName/:name', PatientController.searchPatientByName)
+//PatientRouter.get('/searchPatientByPhysicianId/:id', PatientController.searchPatientByPhysicianId)
+
 module.exports = PatientRouter

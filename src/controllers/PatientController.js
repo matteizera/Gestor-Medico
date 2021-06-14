@@ -1,6 +1,6 @@
 const Patients = require('../models/patients')
 const Doctors = require('../models/doctors')
-
+const { Op } = require("sequelize");
 module.exports = {
   async ListAllPatients(req, res) {
     const patients = await Patients.findAll({
@@ -57,4 +57,23 @@ module.exports = {
       res.status(422).json({ msg })
     }
   },
+  newPatient(req,res){
+    const { name, email, phone, } = req.body
+    Patients.create({ name, email, phone })
+      .then(patient => res.json(patient).status(202))
+      .catch(err=>res.json(err).status(404))
+  },
+  searchPatientByName(req,res){
+    const { name } = req.params
+    Patients.findAll({
+      where: {
+        name: {
+          [Op.substring]: name
+        }
+      }
+    })
+      .then(patients => res.json(patients).status(202))
+      .catch(err=>res.json(err).status(404))
+  },
+
 }
