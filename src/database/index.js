@@ -7,6 +7,14 @@ const Appointment = require('../models/appointments')
 
 const connection = new Sequelize(dbConfig)
 
+/* initialize()
+async function initialize(){
+  await connection.query('CREATE DATABASE api_consultorio;');
+}
+
+usar 1 vez para o docker
+*/
+
 Patient.init(connection)
 Doctor.init(connection)
 Appointment.init(connection)
