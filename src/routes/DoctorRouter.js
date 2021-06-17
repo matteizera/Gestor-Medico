@@ -4,7 +4,7 @@ const { DoctorController } = require('../controllers')
 const DoctorRouter = express.Router()
 
 DoctorRouter.get('/', DoctorController.listAllDoctor)
-DoctorRouter.post('/', DoctorController.newDoctor)
+DoctorRouter.post('/', DoctorController.saveNewDoctor)
 DoctorRouter.put('/:id', DoctorController.updateDoctor)
 DoctorRouter.delete('/:id', DoctorController.deleteDoctor)
 

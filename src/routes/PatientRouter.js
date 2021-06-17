@@ -3,10 +3,10 @@ const { PatientController } = require('../controllers')
 
 const PatientRouter = express.Router()
 
-PatientRouter.get('/listAllPatients', PatientController.ListAllPatients)
-PatientRouter.get('/searchPatientByName/:name', PatientController.searchPatientByName)
-PatientRouter.get('/searchPatientByPhysicianId/:id', PatientController.searchPatientByPhysicianId)
-PatientRouter.post('/newPatient', PatientController.newPatient)
-PatientRouter.put('/updatePatient/:id', PatientController.updatePatient)
+PatientRouter.get('/', PatientController.ListAllPatients)
+PatientRouter.get('/search/:name', PatientController.searchPatientByName)
+PatientRouter.get('/search/doctor/:id', PatientController.searchPatientByDoctorId)
+PatientRouter.post('/', PatientController.saveNewPatient)
+PatientRouter.put('/:id', PatientController.updatePatient)
 
 module.exports = PatientRouter
