@@ -1,6 +1,6 @@
 const Doctor = require('../models/doctors')
 
-async function newPhysician(req, res) {
+async function newDoctor(req, res) {
   const { name, email, password } = req.body
 
   if (!name || !email || !password) {
@@ -26,7 +26,7 @@ async function newPhysician(req, res) {
   }
 }
 
-async function listAllPhysician(req, res) {
+async function listAllDoctor(req, res) {
   const doctors = await Doctor.findAll({
     as: 'doctors',
     order: [['name', 'ASC']],
@@ -37,7 +37,7 @@ async function listAllPhysician(req, res) {
     .json(doctors)
 }
 
-async function updatePhysician(req, res) {
+async function updateDoctor(req, res) {
   const { name, email, password } = req.body
   const doctorId = Number(req.params.id) || 0
   const oldDoctor = await Doctor.findByPk(doctorId)
@@ -67,7 +67,7 @@ async function updatePhysician(req, res) {
   }
 }
 
-async function deletePhysician(req, res) {
+async function deleteDoctor(req, res) {
   const doctorId = Number(req.params.id) || 0
   const deletedDoctorsCount = await Doctor.destroy({
     where: { id: doctorId },
@@ -85,8 +85,8 @@ async function deletePhysician(req, res) {
 }
 
 module.exports = {
-  newPhysician,
-  listAllPhysician,
-  updatePhysician,
-  deletePhysician,
+  newDoctor,
+  listAllDoctor,
+  updateDoctor,
+  deleteDoctor,
 }
