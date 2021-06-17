@@ -4,9 +4,9 @@ Aplicação construída como atividades avaliativas da disciplina de *Tópicos E
 
 Há 3 ciclos de entrega:
 
-- Inicialização do projeto e configuração do banco de dados com *Sequelize*: [enunciado](./Atividade 02 - Criando Migrations e Seeders.pdf) | [1ª atividade](https://github.com/matteizera/Gestor-Medico/releases/tag/Entrega-2)
-- Definição dos *models*, das rotas e dos *controllers*: [enunciado](./Atividade 03 - MVC.pdf) | [2ª atividade](https://github.com/matteizera/Gestor-Medico/releases/tag/Entrega-3)
-- Validação de campos e autenticação associada com JWT: [enunciado](./Atividade 04 - Middleware.pdf) <!-- | [3ª atividade](https://github.com/matteizera/Gestor-Medico/releases/tag/Entrega-4) -->
+- Inicialização do projeto e configuração do banco de dados com *Sequelize*: [enunciado](https://github.com/matteizera/Gestor-Medico/blob/main/Atividade%2002%20-%20Criando%20Migrations%20e%20Seeders.pdf) | [1ª atividade](https://github.com/matteizera/Gestor-Medico/releases/tag/Entrega-2)
+- Definição dos *models*, das rotas e dos *controllers*: [enunciado](https://github.com/matteizera/Gestor-Medico/blob/main/Atividade%2003%20-%20MVC.pdf) | [2ª atividade](https://github.com/matteizera/Gestor-Medico/releases/tag/Entrega-3)
+- Validação de campos e autenticação associada com JWT: [enunciado](https://github.com/matteizera/Gestor-Medico/blob/main/Atividade%2004%20-%20Middleware.pdf) <!-- | [3ª atividade](https://github.com/matteizera/Gestor-Medico/releases/tag/Entrega-4) -->
 
 ## Modelo Relacional
 
