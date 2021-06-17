@@ -1,59 +1,92 @@
-const  Doctors = require( '../models/doctors')
+const Doctor = require('../models/doctors')
 
-const newPhysician =  (req,res)=>{
+async function newPhysician(req, res) {
   const { name, email, password } = req.body
-  if (!!name && !!email && !!password) {
 
-    Doctors.create({
-      name,
-      email,
-      password
-    })
-    .then(doctor => res.json(doctor).status(202))
-    .catch(err=>res.status(404))
-  } else {
-    res.json({msg:"Faltam dados"}).status(404)
+  if (!name || !email || !password) {
+    return res
+      .status(422)
+      .json({ msg: 'Dados obrigatórios não preenchidos.' })
   }
 
+  try {
+    const doctor = await Doctor.create({
+      name,
+      email,
+      password,
+    })
 
+    return res
+      .status(201)
+      .json(doctor)
+  } catch (error) {
+    console.warn(error)
+
+    return res.status(500).send()
+  }
 }
 
-const listAllPhysician =  (req, res) => {
-  Doctors.findAll().then(result => {
-    res.json(result).status(202)
-  }).catch(err => {
-    res.status(404)
+async function listAllPhysician(req, res) {
+  const doctors = await Doctor.findAll({
+    as: 'doctors',
+    order: [['name', 'ASC']],
   })
+
+  res
+    .status(200)
+    .json(doctors)
 }
-const updatePhysician = (req, res) => {
+
+async function updatePhysician(req, res) {
   const { name, email, password } = req.body
-  const { id } = req.params
+  const doctorId = Number(req.params.id) || 0
+  const oldDoctor = await Doctor.findByPk(doctorId)
 
-  Doctors.update({
-    name,
-    email,
-    password
-  }, { where: {id} })
-  .then(result => {
-    res.json(result).status(202)
-  }).catch(err => {
-    res.status(404)
-  })
+  if (!oldDoctor) {
+    return res
+      .status(404)
+      .json({ msg: `Médico com ID '${req.params.id}' não encontrado.` })
+  }
+
+  try {
+    await Doctor.update({
+      password: password || oldDoctor.password,
+      email: email || oldDoctor.email,
+      name: name || oldDoctor.name,
+    }, {
+      where: { id: doctorId },
+    })
+
+    return res
+      .status(200)
+      .send()
+  } catch (error) {
+    console.warn(error)
+
+    return res.status(500).send()
+  }
 }
-const deletePhysician = (req, res) => {
-  const { id } = req.params
 
-  Doctors.destroy( { where: {id} })
-  .then(result => {
-    res.json(result).status(202)
-  }).catch(err => {
-    res.status(404)
+async function deletePhysician(req, res) {
+  const doctorId = Number(req.params.id) || 0
+  const deletedDoctorsCount = await Doctor.destroy({
+    where: { id: doctorId },
   })
+
+  if (!deletedDoctorsCount) {
+    res
+      .status(404)
+      .json({ msg: `Médico com ID ${req.params.id} não encotrado.` })
+  } else {
+    res
+      .status(200)
+      .json({ msg: 'Médico excluído com sucesso.' })
+  }
 }
 
 module.exports = {
   newPhysician,
   listAllPhysician,
   updatePhysician,
-  deletePhysician
+  deletePhysician,
 }

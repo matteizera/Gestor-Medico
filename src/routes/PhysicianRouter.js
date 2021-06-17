@@ -1,13 +1,11 @@
 const express = require('express')
-const PhysicianRouter = express.Router()
-const PhysicianController = require('../controllers/PhysicianController')
+const { PhysicianController } = require('../controllers')
 
-PhysicianRouter.post('/', PhysicianController.newPhysician)
+const PhysicianRouter = express.Router()
 
 PhysicianRouter.get('/', PhysicianController.listAllPhysician)
-
+PhysicianRouter.post('/', PhysicianController.newPhysician)
 PhysicianRouter.put('/:id', PhysicianController.updatePhysician)
-
 PhysicianRouter.delete('/:id', PhysicianController.deletePhysician)
 
 module.exports = PhysicianRouter

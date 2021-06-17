@@ -14,8 +14,6 @@ class appointments extends Sequelize.Model {
       },
     )
   }
-
 }
 
 module.exports = appointments
-

@@ -1,85 +1,111 @@
-const Patients = require('../models/patients')
-const Doctors = require('../models/doctors')
-const { Op } = require("sequelize");
+const { Op } = require('sequelize')
+const Doctor = require('../models/doctors')
+const Patient = require('../models/patients')
+
+async function ListAllPatients(req, res) {
+  const patients = await Patient.findAll({
+    as: 'patients',
+    order: [['name', 'ASC']],
+  })
+
+  res
+    .status(200)
+    .json(patients)
+}
+
+async function searchPatientByName(req, res) {
+  const { name } = req.params
+  const patients = await Patient.findAll({
+    where: {
+      name: {
+        [Op.substring]: name,
+      },
+    },
+  })
+
+  res
+    .status(200)
+    .json(patients)
+}
+
+async function searchPatientByPhysicianId(req, res) {
+  const doctorId = Number(req.params.id)
+  const patients = await Patient.findAll({
+    include: [
+      {
+        model: Doctor,
+        as: 'doctors',
+        where: { id: doctorId },
+        through: { attributes: [] },
+      },
+    ],
+  })
+
+  res
+    .status(200)
+    .json(patients)
+}
+
+async function newPatient(req, res) {
+  const { name, email, phone } = req.body
+
+  if (!name || !email || !phone) {
+    return res
+      .status(422)
+      .json({ msg: 'Dados obrigatórios não preenchidos.' })
+  }
+
+  try {
+    const patient = await Patient.create({
+      phone,
+      email,
+      name,
+    })
+
+    return res
+      .status(201)
+      .json(patient)
+  } catch (error) {
+    console.warn(error)
+
+    return res.status(500).send()
+  }
+}
+
+async function updatePatient(req, res) {
+  const { name, email, phone } = req.body
+  const patientId = Number(req.params.id) || 0
+  const oldPatient = await Patient.findByPk(patientId)
+
+  if (!oldPatient) {
+    return res
+      .status(404)
+      .json({ msg: `Paciente com ID '${req.params.id}' não encontrado.` })
+  }
+
+  try {
+    await Patient.update({
+      phone: phone || oldPatient.phone,
+      email: email || oldPatient.email,
+      name: name || oldPatient.name,
+    }, {
+      where: { id: patientId },
+    })
+
+    return res
+      .status(200)
+      .send()
+  } catch (error) {
+    console.warn(error)
+
+    return res.status(500).send()
+  }
+}
+
 module.exports = {
-  async ListAllPatients(req, res) {
-    const patients = await Patients.findAll({
-      as: 'patients',
-      order: [['name', 'ASC']],
-    }).catch((error) => {
-      console.log(error)
-    })
-    if (patients) {
-      res.status(200).json({ patients })
-    } else {
-      res.status(404).json(
-        { msg: 'Não foi possível encotrar pacientes' },
-      )
-    }
-  },
-
-  async searchPatientByPhysicianId(req, res) {
-    const doctor = Number(req.params.id)
-    const patient = await Patients.findAll({
-      include: [
-        {
-          model: Doctors,
-          as: 'doctors',
-          where: { id: doctor },
-          through: { attributes: [] },
-        },
-      ],
-    })
-    if (!patient) {
-      res.status(404).json({ msg: 'Paciente não encontrado' })
-    } else {
-      res.status(200).json(patient)
-    }
-  },
-
-  async updatePatient(req, res) {
-    const patientId = Number(req.params.id)
-    const oldPatient = await Patients.findByPk(patientId)
-    const { name, email, phone } = req.body
-    const newPatient = { id: patientId, name, email, phone }
-
-    if (!oldPatient) {
-      res.status(404).json({ msg: `Paciente com ID '${req.params.id}' não encontrado` })
-      return
-    }
-
-    try {
-      Patients.update(newPatient, {
-        where: { id: patientId },
-      })
-      res.status(200).json({ msg: 'paciente alterado com sucesso' })
-    } catch (msg) {
-      res.status(422).json({ msg })
-    }
-  },
-  newPatient(req,res){
-    const { name, email, phone, } = req.body
-    console.log(!!name, !!email, !!phone,)
-    if (!!name && !!email && !!phone) {
-       Patients.create({ name, email, phone })
-      .then(patient => res.json(patient).status(202))
-      .catch(err=>res.json(err).status(404))
-    } else {
-      res.json({msg:"Faltam dados"}).status(404)
-    }
-
-  },
-  searchPatientByName(req,res){
-    const { name } = req.params
-    Patients.findAll({
-      where: {
-        name: {
-          [Op.substring]: name
-        }
-      }
-    })
-      .then(patients => res.json(patients).status(202))
-      .catch(err=>res.json(err).status(404))
-  },
-
+  ListAllPatients,
+  searchPatientByName,
+  searchPatientByPhysicianId,
+  newPatient,
+  updatePatient,
 }
