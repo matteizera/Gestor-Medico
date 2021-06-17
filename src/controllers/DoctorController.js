@@ -1,6 +1,6 @@
 const Doctor = require('../models/doctors')
 
-async function newDoctor(req, res) {
+async function saveNewDoctor(req, res) {
   const { name, email, password } = req.body
 
   if (!name || !email || !password) {
@@ -10,7 +10,7 @@ async function newDoctor(req, res) {
   }
 
   try {
-    const doctor = await Doctor.create({
+    const newDoctor = await Doctor.create({
       name,
       email,
       password,
@@ -18,7 +18,7 @@ async function newDoctor(req, res) {
 
     return res
       .status(201)
-      .json(doctor)
+      .json(newDoctor)
   } catch (error) {
     console.warn(error)
 
@@ -85,7 +85,7 @@ async function deleteDoctor(req, res) {
 }
 
 module.exports = {
-  newDoctor,
+  saveNewDoctor,
   listAllDoctor,
   updateDoctor,
   deleteDoctor,

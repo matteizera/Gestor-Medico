@@ -28,7 +28,7 @@ async function searchPatientByName(req, res) {
     .json(patients)
 }
 
-async function searchPatientByPhysicianId(req, res) {
+async function searchPatientByDoctorId(req, res) {
   const doctorId = Number(req.params.id)
   const patients = await Patient.findAll({
     include: [
@@ -46,7 +46,7 @@ async function searchPatientByPhysicianId(req, res) {
     .json(patients)
 }
 
-async function newPatient(req, res) {
+async function saveNewPatient(req, res) {
   const { name, email, phone } = req.body
 
   if (!name || !email || !phone) {
@@ -56,7 +56,7 @@ async function newPatient(req, res) {
   }
 
   try {
-    const patient = await Patient.create({
+    const newPatient = await Patient.create({
       phone,
       email,
       name,
@@ -64,7 +64,7 @@ async function newPatient(req, res) {
 
     return res
       .status(201)
-      .json(patient)
+      .json(newPatient)
   } catch (error) {
     console.warn(error)
 
@@ -105,7 +105,7 @@ async function updatePatient(req, res) {
 module.exports = {
   ListAllPatients,
   searchPatientByName,
-  searchPatientByPhysicianId,
-  newPatient,
+  searchPatientByDoctorId,
+  saveNewPatient,
   updatePatient,
 }

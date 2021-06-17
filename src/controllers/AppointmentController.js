@@ -11,7 +11,7 @@ async function searchAppointmentByPatientId(req, res) {
     .json(patients)
 }
 
-async function searchAppointmentByPhysicianId(req, res) {
+async function searchAppointmentByDoctorId(req, res) {
   const doctorId = Number(req.params.id) || 0
   const patients = await Appointment.findAll({
     where: { doctorId },
@@ -22,7 +22,7 @@ async function searchAppointmentByPhysicianId(req, res) {
     .json(patients)
 }
 
-async function newAppointment(req, res) {
+async function saveNewAppointment(req, res) {
   const { doctorId, patientId, appointmentDate, description } = req.body
 
   if (!doctorId || !patientId || !appointmentDate || !description) {
@@ -42,7 +42,7 @@ async function newAppointment(req, res) {
   }
 
   try {
-    const appointment = await Appointment.create({
+    const newAppointment = await Appointment.create({
       doctorId,
       patientId,
       appointmentDate,
@@ -51,7 +51,7 @@ async function newAppointment(req, res) {
 
     return res
       .status(201)
-      .json(appointment)
+      .json(newAppointment)
   } catch (error) {
     console.warn(error)
 
@@ -78,7 +78,7 @@ async function deleteAppointment(req, res) {
 
 module.exports = {
   searchAppointmentByPatientId,
-  searchAppointmentByPhysicianId,
-  newAppointment,
+  searchAppointmentByDoctorId,
+  saveNewAppointment,
   deleteAppointment,
 }

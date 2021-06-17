@@ -1,6 +1,6 @@
 
 module.exports = {
+  DoctorController: require('./DoctorController'),
   PatientController: require('./PatientController'),
-  PhysicianController: require('./PhysicianController'),
   AppointmentController: require('./AppointmentController'),
 }
