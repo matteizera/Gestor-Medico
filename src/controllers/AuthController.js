@@ -1,4 +1,5 @@
 const Doctor = require('../models/doctors')
+const { authPolicy } = require('../security')
 
 async function signIn(req, res) {
   const { email, password } = req.body
@@ -11,10 +12,10 @@ async function signIn(req, res) {
 
   try {
     const user = await Doctor.findOne({
-      where: { email, password },
+      where: { email },
     })
 
-    if (!user) {
+    if (!user || !authPolicy.comparePasswords(password, user.password)) {
       return res
         .status(401)
         .json({ msg: 'Credenciais inválidas.' })

@@ -14,7 +14,12 @@ function hashPassword(plainPassword) {
   return hashedPassword
 }
 
+function comparePasswords(plainPassword, hashedPasswords) {
+  return bcrypt.compareSync(plainPassword, hashedPasswords)
+}
+
 module.exports = {
   isPasswordValid,
   hashPassword,
+  comparePasswords,
 }
