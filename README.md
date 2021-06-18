@@ -20,6 +20,7 @@ Os seguintes *endpoints* foram criados para atender oaos requisitos:
 
 | Path                           | Método | Ação                                                        |
 |:-------------------------------|:------:|:------------------------------------------------------------|
+| `/signin`                      | POST   | Autentica um usuário com base no *email* e no *password*    |
 | `/doctors`                     | GET    | Listar todos os médicos                                     |
 | `/doctors`                     | POST   | Salvar um novo médico                                       |
 | `/doctors/:id`                 | PUT    | Atualizar dados do médico com ID `:id`                      |
