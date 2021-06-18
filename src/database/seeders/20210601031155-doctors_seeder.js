@@ -1,3 +1,4 @@
+const { authPolicy } = require('../../security')
 const { faker } = require('../../utils')
 
 function doctorFactory() {
@@ -8,7 +9,7 @@ function doctorFactory() {
   return {
     name: faker.name.findName(),
     email: faker.internet.email(),
-    password: faker.internet.password(),
+    password: authPolicy.hashPassword('qwerty123'),
     createdAt,
     updatedAt,
   }

@@ -1,4 +1,5 @@
 const Doctor = require('../models/doctors')
+const { authPolicy } = require('../security')
 
 async function saveNewDoctor(req, res) {
   const { name, email, password } = req.body
@@ -13,7 +14,7 @@ async function saveNewDoctor(req, res) {
     const newDoctor = await Doctor.create({
       name,
       email,
-      password,
+      password: authPolicy.hashPassword(password),
     })
 
     return res
@@ -50,16 +51,18 @@ async function updateDoctor(req, res) {
 
   try {
     await Doctor.update({
-      password: password || oldDoctor.password,
-      email: email || oldDoctor.email,
       name: name || oldDoctor.name,
+      email: email || oldDoctor.email,
+      password: password
+        ? authPolicy.hashPassword(password)
+        : oldDoctor.password,
     }, {
       where: { id: doctorId },
     })
 
     return res
       .status(200)
-      .send()
+      .json({ msg: 'Médico atualizado com sucesso.' })
   } catch (error) {
     console.warn(error)
 

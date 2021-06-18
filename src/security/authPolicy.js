@@ -1,3 +1,4 @@
+const bcrypt = require('bcrypt')
 
 function isPasswordValid(password) {
   return typeof password === 'string'
@@ -6,6 +7,14 @@ function isPasswordValid(password) {
   && password.length >= 8
 }
 
+function hashPassword(plainPassword) {
+  const salt = bcrypt.genSaltSync()
+  const hashedPassword = bcrypt.hashSync(plainPassword, salt)
+
+  return hashedPassword
+}
+
 module.exports = {
   isPasswordValid,
+  hashPassword,
 }
