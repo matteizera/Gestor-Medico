@@ -23,7 +23,10 @@ async function signIn(req, res) {
 
     return res
       .status(200)
-      .json({ msg: 'Sucesso.' })
+      .json({
+        msg: 'Sucesso.',
+        token: authPolicy.generateToken({ user: user.id }),
+      })
   } catch (error) {
     console.warn(error)
 

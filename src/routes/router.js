@@ -3,6 +3,7 @@ const AuthRouter = require('./AuthRouter')
 const DoctorRouter = require('./DoctorRouter')
 const PatientRouter = require('./PatientRouter')
 const AppointmentRouter = require('./AppointmentRouter')
+const { checkToken } = require('../middlewares')
 
 const router = express.Router()
 
@@ -11,8 +12,8 @@ router.get('/', (req, res) => {
 })
 
 router.use(AuthRouter)
-router.use('/doctors', DoctorRouter)
-router.use('/patients', PatientRouter)
-router.use('/appointments', AppointmentRouter)
+router.use('/doctors', checkToken(), DoctorRouter)
+router.use('/patients', checkToken(), PatientRouter)
+router.use('/appointments', checkToken(), AppointmentRouter)
 
 module.exports = router
